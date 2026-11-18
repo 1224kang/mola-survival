@@ -39,6 +39,15 @@ week-12/
 └── mini-redis/mini-redis-impl/jungle-mini-redis/
 ```
 
+처음 준비할 때는 `week-12`에서 아래 명령으로 두 엔진의 검증된 버전을 받을 수 있습니다.
+
+```sh
+git clone -b develop https://github.com/stereokkh/jungle-mini-dbms.git mini-sql/jungle-mini-dbms
+git -C mini-sql/jungle-mini-dbms checkout 6ee5e6f3d58f4a1951e5b9a41790ac70d57d5320
+git clone https://github.com/Choidongho08/jungle-mini-redis.git mini-redis/mini-redis-impl/jungle-mini-redis
+git -C mini-redis/mini-redis-impl/jungle-mini-redis checkout 467229894f2efd10dbcd4a6de74a87a7f2a02ed0
+```
+
 게임 폴더에서 실행합니다.
 
 ```sh
