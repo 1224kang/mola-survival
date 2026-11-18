@@ -30,31 +30,31 @@
 
 ## 로컬 실행
 
-macOS 또는 Linux에서 Python 3, make, C 컴파일러를 사용합니다. 세 저장소를 다음 위치에 두면 게임 실행기가 두 엔진을 자동으로 찾습니다.
+macOS 또는 Linux에서 Git, Python 3, `make`, C 컴파일러가 필요합니다. Windows에서는 WSL의 Ubuntu 터미널에서 같은 절차를 사용할 수 있습니다.
 
-```text
-week-12/
-├── mola-survival/
-├── mini-sql/jungle-mini-dbms/
-└── mini-redis/mini-redis-impl/jungle-mini-redis/
-```
+게임 저장소는 비공개입니다. 저장소 소유자에게 GitHub 계정 접근 권한을 받은 뒤, 해당 계정으로 인증해서 복제하세요.
 
-처음 준비할 때는 `week-12`에서 아래 명령으로 두 엔진의 검증된 버전을 받을 수 있습니다.
+빈 작업 폴더에서 다음 명령을 실행하면 게임과 실행에 사용한 두 엔진 버전을 한 번에 준비할 수 있습니다.
 
 ```sh
+mkdir -p week-12
+cd week-12
+
+git clone https://github.com/1224kang/mola-survival.git
+
 git clone -b develop https://github.com/stereokkh/jungle-mini-dbms.git mini-sql/jungle-mini-dbms
 git -C mini-sql/jungle-mini-dbms checkout 6ee5e6f3d58f4a1951e5b9a41790ac70d57d5320
+
 git clone https://github.com/Choidongho08/jungle-mini-redis.git mini-redis/mini-redis-impl/jungle-mini-redis
 git -C mini-redis/mini-redis-impl/jungle-mini-redis checkout 467229894f2efd10dbcd4a6de74a87a7f2a02ed0
-```
 
-게임 폴더에서 실행합니다.
-
-```sh
+cd mola-survival
 python3 run.py
 ```
 
-[수조 열기](http://127.0.0.1:8787). 기본 포트는 게임 8787, DBMS 18780, Redis 16379입니다. 두 엔진을 다른 곳에 복제했다면 각 Makefile이 있는 폴더를 지정해 실행할 수 있습니다.
+`run.py`가 두 엔진을 빌드하고 게임 서버와 함께 실행합니다. 터미널을 켜 둔 상태로 브라우저에서 [수조 열기](http://127.0.0.1:8787)를 누르세요. 첫 실행은 빈 수조로 시작합니다.
+
+기본 포트는 게임 8787, DBMS 18780, Redis 16379입니다. 두 엔진을 다른 곳에 복제했다면 각 Makefile이 있는 폴더를 지정해 실행할 수 있습니다.
 
 ```sh
 MOLA_DB_SRC=/path/to/jungle-mini-dbms MOLA_REDIS_SRC=/path/to/jungle-mini-redis python3 run.py
