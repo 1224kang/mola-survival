@@ -15,7 +15,7 @@ let generation = 0;
 let view = "tank";
 let currentState = {};
 let renderedRows = "";
-let adoptionError = "";
+let renderedQueries = "";
 
 function renderHistory(history) {
   const key = JSON.stringify(history?.rows || []);
@@ -47,7 +47,7 @@ function renderHistory(history) {
 
 function render(state) {
   currentState = state;
-  const { pet, insert, history, benchmark } = state;
+  const { pet, history, benchmark, queries = [] } = state;
   const alive = pet?.status === "alive";
   const dead = pet?.status === "dead";
   const stage = dead ? "dead" : alive && pet.remaining_ms <= 3000 ? "hungry" : "idle";
@@ -71,7 +71,22 @@ function render(state) {
   byId("key-state").textContent = alive ? "유효" : dead ? (causeText(pet.cause) === "굶주림" ? "TTL 만료" : "삭제됨") : "입양 대기";
   byId("cause-row").hidden = !dead;
   byId("cause").textContent = causeText(pet?.cause);
-  byId("insert-result").textContent = adoptionError || (insert ? "INSERT 성공 · " + insert.name + " · ID " + insert.id : "입양 대기");
+  const queryKey = JSON.stringify(queries);
+  if (queryKey !== renderedQueries) {
+    renderedQueries = queryKey;
+    byId("query-empty").hidden = queries.length > 0;
+    byId("query-log").replaceChildren(...queries.map((query) => {
+      const item = document.createElement("li");
+      const sql = document.createElement("code");
+      sql.textContent = query.sql;
+      const detail = document.createElement("small");
+      detail.textContent = (query.ok ? "성공" : "실패")
+        + (query.inserted_id != null ? " · ID " + query.inserted_id : "")
+        + (query.count > 1 ? " · 연속 " + query.count + "회" : "");
+      item.append(sql, detail);
+      return item;
+    }));
+  }
   byId("cache-hit").textContent = history ? history.hit ? "HIT" : "MISS" : "조회 대기";
   byId("cache-hit").className = "chip" + (history ? history.hit ? " hit" : " miss" : "");
   byId("lookup-time").textContent = history ? milliseconds(history.ms) : "—";
@@ -131,15 +146,10 @@ async function act(endpoint, body = {}) {
   if (endpoint === "benchmark") byId("benchmark").textContent = "측정 중…";
   try {
     const result = await request(endpoint, body);
-    if (endpoint === "adopt") adoptionError = "";
     render(result);
     if (endpoint === "adopt") byId("pet-name").value = "";
   } catch (error) {
     showError(error.message);
-    if (endpoint === "adopt") {
-      adoptionError = "입양 실패 · " + error.message;
-      byId("insert-result").textContent = adoptionError;
-    }
   } finally {
     for (const id of ["adopt", "feed", "benchmark", "reload-history", "history-tab"]) byId(id).disabled = false;
     byId("benchmark").innerHTML = '복치 기록 100번 열기 <span aria-hidden="true">↗</span>';

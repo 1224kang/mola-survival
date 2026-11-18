@@ -1,4 +1,6 @@
 """Single-user aquarium. The game server owns state transitions for one local tank."""
+from collections import deque
+
 import json
 import logging
 import mimetypes
@@ -30,6 +32,22 @@ class Game:
         self.file = Path(data_dir) / "round.json"
         self.round = json.loads(self.file.read_text()) if self.file.exists() else None
         self.history = self.benchmark = None
+        self.query_lock = threading.Lock()
+        self.queries = deque(maxlen=8)
+
+    def query(self, sql):
+        entry = {"sql": sql, "ok": False, "count": 1}
+        try:
+            result = self.engine.db(sql)
+            entry.update(ok=True, inserted_id=result.get("inserted_id"))
+            return result
+        finally:
+            with self.query_lock:
+                previous = self.queries[0] if self.queries else None
+                if previous and all(previous.get(key) == value for key, value in entry.items() if key != "count"):
+                    entry["count"] += self.queries.popleft()["count"]
+                self.queries.appendleft(entry)
+
 
     def save(self):
         tmp = self.file.with_suffix(".tmp")
@@ -53,7 +71,7 @@ class Game:
             self.tick()
             if self.round and self.round["status"] != "dead":
                 raise ValueError("이미 수조에 살고 있는 복치가 있어요.")
-            result = self.engine.db(f"INSERT INTO adoptions VALUES ({sql_text(name)});")
+            result = self.query(f"INSERT INTO adoptions VALUES ({sql_text(name)});")
             start = now_ms()
             self.round = dict(id=result["inserted_id"], name=name, status="starting",
                               started=start, deadline=start + 10000, stress=0, hungry=False,
@@ -71,9 +89,9 @@ class Game:
         r = self.round
         with self.history_lock:
             # Recover a committed INSERT if the process stopped before invalidation.
-            found = self.engine.db(f"SELECT id FROM deaths WHERE pet_id = {r['id']};")
+            found = self.query(f"SELECT id FROM deaths WHERE pet_id = {r['id']};")
             if not found["rows"]:
-                self.engine.db(f"INSERT INTO deaths VALUES ({r['id']}, {sql_text(r['name'])}, "
+                self.query(f"INSERT INTO deaths VALUES ({r['id']}, {sql_text(r['name'])}, "
                                f"{r['survival_ms']}, {sql_text(r['cause'])});")
             self.engine.redis("DEL", self.key(), HISTORY_KEY)
             r["status"] = "dead"
@@ -132,7 +150,7 @@ class Game:
         start = time.perf_counter()
         cached = self.engine.redis("GET", key) if key else None
         if cached is None:
-            records = self.engine.db("SELECT name, survival_ms, cause FROM deaths;")["rows"]
+            records = self.query("SELECT name, survival_ms, cause FROM deaths;")["rows"]
             rows = [dict(name=n, survival_ms=t, cause=c) for n,t,c in reversed(records)]
             encoded = json.dumps(rows, ensure_ascii=False, separators=(",", ":"))
             if key and len(encoded.encode()) < 240_000:
@@ -157,12 +175,16 @@ class Game:
             self.engine.redis("DEL", BENCH_KEY)
             self.benchmark = results
 
+    def query_snapshot(self):
+        with self.query_lock:
+            return list(self.queries)
+
     def snapshot(self):
         with self.lock:
             self.tick()
             r = self.round
             return dict(pet=dict(r) if r else None, insert={"id":r["id"], "name":r["name"]} if r else None,
-                        history=self.history, benchmark=self.benchmark)
+                        history=self.history, benchmark=self.benchmark, queries=self.query_snapshot())
 
 
 def serve(engines, game_port, data_dir):

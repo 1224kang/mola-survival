@@ -46,7 +46,7 @@
       <div class="row"><span>생존 키</span><b id="key-state">입양 대기</b></div>
       <div class="row" id="cause-row" hidden><span>사인</span><b id="cause"></b></div>
     </section>
-    <section><div class="section-title"><h3>입양 기록</h3><small>DBMS</small></div><div id="insert-result" class="metric-note">입양 대기</div></section>
+    <section><div class="section-title"><h3>DBMS 쿼리 기록</h3></div><p id="query-empty" class="metric-note">실행된 쿼리가 없어요.</p><ol id="query-log" aria-label="최근 실행된 SQL"></ol></section>
     <section><div class="section-title"><h3>최근 기록 조회</h3><span class="chip" id="cache-hit">조회 대기</span></div><div class="row"><span>처리 시간</span><b id="lookup-time">—</b></div><div class="row"><span>DBMS 호출</span><b id="lookup-db">—</b></div></section>
     <section><div class="section-title"><h3>캐시 성능 비교</h3></div><button id="benchmark" class="bench">복치 기록 100번 열기 <span aria-hidden="true">↗</span></button>
       <table><thead><tr><th>캐시</th><th>총 시간</th><th>DBMS 호출</th></tr></thead><tbody><tr><th>끔</th><td id="off-time">—</td><td id="off-db">—</td></tr><tr><th>켬</th><td id="on-time">—</td><td id="on-db">—</td></tr></tbody></table>
