@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f6ee"><title>개복치 생존 신고센터</title>
+  <link rel="icon" href="./assets/mola-idle.png"><link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+<header class="mast"><div class="shell mast-inner">
+  <a class="brand" href="#tank"><span class="brand-fish"><img src="./assets/mola-idle.png" alt=""></span>개복치 생존 신고센터</a>
+  <nav aria-label="화면 선택"><button id="tank-tab" aria-pressed="true">나의 수조</button><button id="history-tab" aria-pressed="false">내가 키운 복치들</button></nav>
+</div></header>
+<main class="shell layout">
+<section class="main-region">
+  <div id="tank-view">
+    <h1>나의 수조</h1>
+    <div class="tank" id="tank">
+      <div class="water-texture" aria-hidden="true"></div>
+      <span id="status-badge" class="tank-status"><i></i><span id="status-text">입양 대기</span></span>
+      <div class="fish-area"><img id="mascot" src="./assets/mola-idle.png" alt="짝짝이 눈으로 웃는 개복치"></div>
+      <div class="floor" aria-hidden="true"></div><div class="flora flora-left" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="flora flora-right" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <span class="pebble p1" aria-hidden="true"></span><span class="pebble p2" aria-hidden="true"></span><span class="pebble p3" aria-hidden="true"></span>
+    </div>
+    <section class="action-box">
+      <h2 id="game-title">복치에게 이름을 지어주세요</h2>
+      <p id="game-message">입양하면 10초의 생존 타이머가 시작돼요.</p>
+      <form id="adopt-form"><label class="sr" for="pet-name">개복치 이름</label><input id="pet-name" name="name" maxlength="20" required autocomplete="off" placeholder="개복치 이름"><button class="primary" id="adopt">입양하기</button></form>
+      <button class="primary feed" id="feed" hidden>🦐 새우 주기 <span>+4초</span></button>
+    </section>
+    <details class="rules"><summary>키우는 방법</summary><p>새우 한 마리는 남은 시간에 4초를 더해요. 15초를 넘으면 과식, 0초에 닿으면 굶주림으로 생을 마쳐요. 남은 시간이 3초 이하로 떨어질 때마다 스트레스가 1씩 쌓이고, 세 번째 배고픔에 스트레스로 죽어요.</p></details>
+  </div>
+  <div id="history-view" hidden>
+    <div class="history-heading"><h1>내가 키운 복치들</h1><button id="reload-history" class="plain">다시 조회</button></div>
+    <section class="history-list" aria-label="복치 기록"><div class="list-label"><span>복치 이름</span><span>생존 시간</span><span>사인</span></div><div id="history-rows"></div><p class="empty" id="empty-history">기록을 불러오는 중이에요.</p></section>
+  </div>
+  <p id="error" role="alert" hidden></p>
+</section>
+<aside class="sidebar" aria-label="실시간 상태와 성능">
+  <h2>관측 일지</h2>
+  <div class="panel">
+    <section><div class="section-title"><h3>생존 상태</h3><small>Redis</small></div>
+      <div class="ttl-label">남은 TTL</div><div class="ttl"><strong id="ttl">—</strong><span>초</span></div>
+      <div class="meter"><i id="ttl-bar"></i></div>
+      <div class="row stress"><span>스트레스</span><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><b id="stress">0/3</b></div>
+      <div class="row"><span>생존 키</span><b id="key-state">입양 대기</b></div>
+      <div class="row" id="cause-row" hidden><span>사인</span><b id="cause"></b></div>
+    </section>
+    <section><div class="section-title"><h3>입양 기록</h3><small>DBMS</small></div><div id="insert-result" class="metric-note">입양 대기</div></section>
+    <section><div class="section-title"><h3>최근 기록 조회</h3><span class="chip" id="cache-hit">조회 대기</span></div><div class="row"><span>처리 시간</span><b id="lookup-time">—</b></div><div class="row"><span>DBMS 호출</span><b id="lookup-db">—</b></div></section>
+    <section><div class="section-title"><h3>캐시 성능 비교</h3></div><button id="benchmark" class="bench">복치 기록 100번 열기 <span aria-hidden="true">↗</span></button>
+      <table><thead><tr><th>캐시</th><th>총 시간</th><th>DBMS 호출</th></tr></thead><tbody><tr><th>끔</th><td id="off-time">—</td><td id="off-db">—</td></tr><tr><th>켬</th><td id="on-time">—</td><td id="on-db">—</td></tr></tbody></table>
+    </section>
+  </div>
+</aside>
+</main>
+</body>
+</html>
