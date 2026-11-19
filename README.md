@@ -3,43 +3,12 @@
 ## 1. 협업 방식
 
 ### 미니 Redis: 각자 구현하고 중간에 공유하기
+![미니 Redis 협업 방식](docs/collab-redis.png)
 
-```mermaid
-flowchart TB
-    T(["미니 Redis<br/>각자 구현하고 중간에 공유하기"])
-    T --> H["방식<br/>세 명이 각자<br/>공부 → 설계 → 구현<br/>중간중간 진행상황 공유"]
-    T --> G["장점<br/>놓친 개념을 서로 보완<br/>설계 배경을 알아서<br/>리뷰 때 결정이 쉬움"]
-    T --> B["단점<br/>시간이 많이 듦<br/>방향이 갈라질 수 있음"]
-
-    classDef topic fill:#1f4e79,stroke:#1f4e79,color:#ffffff
-    classDef how fill:#dbe9f6,stroke:#1f4e79,color:#0b2540
-    classDef good fill:#e3f4e1,stroke:#3c8d40,color:#1a1a1a
-    classDef bad fill:#fbe4e2,stroke:#c0504d,color:#1a1a1a
-    class T topic
-    class H how
-    class G good
-    class B bad
-```
 Mini Redis 프로젝트에서는 세 명이 각자 학습부터 구현까지 독립적으로 진행하고, 중간중간 진행 상황을 공유했습니다. 덕분에 같은 문제를 서로 다른 관점에서 해결한 결과물을 비교할 수 있었지만, 각 코드의 장단점을 분석하고 하나로 통합하는 데 많은 시간이 들었습니다.
 
 ### 미니 DBMS Phase 1: 개념을 나눠 공부하고 전체 흐름 맞추기
-
-```mermaid
-flowchart TB
-    T(["미니 DBMS Phase 1<br/>개념을 나눠 공부하고 전체 흐름 맞추기"])
-    T --> H["방식<br/>AI로 개념 정리 후 분배<br/>50분 공부 + 10분 설명<br/>설계는 함께 논의"]
-    T --> G["장점<br/>짧은 시간에 넓은 범위<br/>SQL → 파싱 → 실행 → 저장<br/>흐름을 함께 맞춤"]
-    T --> B["단점<br/>남의 파트는 얕게 앎<br/>설계안을 비교할<br/>기회가 적음"]
-
-    classDef topic fill:#1f4e79,stroke:#1f4e79,color:#ffffff
-    classDef how fill:#dbe9f6,stroke:#1f4e79,color:#0b2540
-    classDef good fill:#e3f4e1,stroke:#3c8d40,color:#1a1a1a
-    classDef bad fill:#fbe4e2,stroke:#c0504d,color:#1a1a1a
-    class T topic
-    class H how
-    class G good
-    class B bad
-```
+![미니 DBMS Phase 1 협업 방식](docs/collab-dbms.png)
 이 경험을 바탕으로 DBMS 프로젝트에서는 협업 방식을 바꿨습니다. AI를 활용해 시간 단위로 학습 범위와 질문을 정하고, 개념을 분담해 학습한 뒤 공유했습니다. 다양한 구현 방식을 탐색하기보다 팀원들이 공통된 이해와 설계 방향을 갖는 데 집중했습니다.
 결국 Mini Redis가 다양성을 통한 탐색이었다면, DBMS는 공통된 이해를 통한 효율적인 구현을 목표로 했습니다
 
