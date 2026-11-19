@@ -7,9 +7,9 @@
 ```mermaid
 flowchart TB
     T(["미니 Redis<br/>각자 구현하고 중간에 공유하기"])
-    T --> H["<b>방식</b><br/>세 명이 각자<br/>공부 → 설계 → 구현<br/>중간중간 진행상황 공유"]
-    T --> G["<b>장점</b><br/>놓친 개념을 서로 보완<br/>설계 배경을 알아서<br/>리뷰 때 결정이 쉬움"]
-    T --> B["<b>단점</b><br/>시간이 많이 듦<br/>방향이 갈라질 수 있음"]
+    T --> H["방식<br/>세 명이 각자<br/>공부 → 설계 → 구현<br/>중간중간 진행상황 공유"]
+    T --> G["장점<br/>놓친 개념을 서로 보완<br/>설계 배경을 알아서<br/>리뷰 때 결정이 쉬움"]
+    T --> B["단점<br/>시간이 많이 듦<br/>방향이 갈라질 수 있음"]
 
     classDef topic fill:#1f4e79,stroke:#1f4e79,color:#ffffff
     classDef how fill:#dbe9f6,stroke:#1f4e79,color:#0b2540
@@ -27,9 +27,9 @@ Mini Redis 프로젝트에서는 세 명이 각자 학습부터 구현까지 독
 ```mermaid
 flowchart TB
     T(["미니 DBMS Phase 1<br/>개념을 나눠 공부하고 전체 흐름 맞추기"])
-    T --> H["<b>방식</b><br/>AI로 개념 정리 후 분배<br/>50분 공부 + 10분 설명<br/>설계는 함께 논의"]
-    T --> G["<b>장점</b><br/>짧은 시간에 넓은 범위<br/>SQL → 파싱 → 실행 → 저장<br/>흐름을 함께 맞춤"]
-    T --> B["<b>단점</b><br/>남의 파트는 얕게 앎<br/>설계안을 비교할<br/>기회가 적음"]
+    T --> H["방식<br/>AI로 개념 정리 후 분배<br/>50분 공부 + 10분 설명<br/>설계는 함께 논의"]
+    T --> G["장점<br/>짧은 시간에 넓은 범위<br/>SQL → 파싱 → 실행 → 저장<br/>흐름을 함께 맞춤"]
+    T --> B["단점<br/>남의 파트는 얕게 앎<br/>설계안을 비교할<br/>기회가 적음"]
 
     classDef topic fill:#1f4e79,stroke:#1f4e79,color:#ffffff
     classDef how fill:#dbe9f6,stroke:#1f4e79,color:#0b2540
