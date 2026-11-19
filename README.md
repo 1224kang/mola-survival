@@ -3,12 +3,12 @@
 ## 1. 협업 방식
 
 ### 미니 Redis: 각자 구현하고 중간에 공유하기
-![미니 Redis 협업 방식](docs/collab-redis.png)
+<img src="docs/collab-redis.png" alt="미니 Redis 협업 방식" width="500">
 
 Mini Redis 프로젝트에서는 세 명이 각자 학습부터 구현까지 독립적으로 진행하고, 중간중간 진행 상황을 공유했습니다. 덕분에 같은 문제를 서로 다른 관점에서 해결한 결과물을 비교할 수 있었지만, 각 코드의 장단점을 분석하고 하나로 통합하는 데 많은 시간이 들었습니다.
 
 ### 미니 DBMS Phase 1: 개념을 나눠 공부하고 전체 흐름 맞추기
-![미니 DBMS Phase 1 협업 방식](docs/collab-dbms.png)
+<img src="docs/collab-dbms.png" alt="미니 DBMS Phase 1 협업 방식" width="500">
 이 경험을 바탕으로 DBMS 프로젝트에서는 협업 방식을 바꿨습니다. AI를 활용해 시간 단위로 학습 범위와 질문을 정하고, 개념을 분담해 학습한 뒤 공유했습니다. 다양한 구현 방식을 탐색하기보다 팀원들이 공통된 이해와 설계 방향을 갖는 데 집중했습니다.
 결국 Mini Redis가 다양성을 통한 탐색이었다면, DBMS는 공통된 이해를 통한 효율적인 구현을 목표로 했습니다
 
@@ -16,9 +16,9 @@ Mini Redis 프로젝트에서는 세 명이 각자 학습부터 구현까지 독
 ## 2. 게임 소개와 구조
 직접 만든 미니 Redis와 미니 DBMS 위에서 돌아가는 1인 웹 게임입니다. 개복치를 입양하고 새우를 주며 얼마나 오래 살리는지 겨룹니다.
 
-![개복치 생존 신고센터 게임 화면](docs/game-screen.png)
+<img src="docs/game-screen.png" alt="개복치 생존 신고센터 게임 화면" width="500">
 
-![게임 서버와 두 엔진의 구조|700](docs/architecture.png)
+<img src="docs/architecture.png" alt="게임 서버와 두 엔진의 구조" width="420">
 
 ## 3. 미니 Redis
 
@@ -87,7 +87,7 @@ dump.rdb.tmp에 전체 키 쓰기 → fsync(디스크까지 확실히 기록) �
 
 | 첫 조회 (MISS)                                                | 다시 조회 (HIT)                                              |
 | ---------------------------------------------------------- | -------------------------------------------------------- |
-| ![첫 조회 MISS: 11.48ms, DBMS 1회\|366](docs/history-miss.png) | ![다시 조회 HIT: 0.29ms, DBMS 0회\|384](docs/history-hit.png) |
+| <img src="docs/history-miss.png" alt="첫 조회 MISS: 11.48ms, DBMS 1회" width="220"> | <img src="docs/history-hit.png" alt="다시 조회 HIT: 0.29ms, DBMS 0회" width="230"> |
 
 ## 4. 미니 DBMS
 
@@ -153,9 +153,9 @@ accept → 연결 fd를 큐에 넣기 ─▶ 원형 큐(64칸) ─▶ 꺼내기 
 - 큐가 가득 차면 기다리게 하지 않고 바로 **`503 server busy`**로 거절해서 서버가 밀리지 않게 했다.
 - 종료할 때는 `broadcast`로 작업자를 모두 깨우고, **큐에 남은 요청까지 처리한 뒤** 끝낸다.
 
-![사망 시 deaths 테이블에 INSERT](docs/dbms-death-insert.png)
+<img src="docs/dbms-death-insert.png" alt="사망 시 deaths 테이블에 INSERT" width="500">
 
-![기록 조회 시 deaths 테이블 SELECT](docs/dbms-history-select.png)
+<img src="docs/dbms-history-select.png" alt="기록 조회 시 deaths 테이블 SELECT" width="500">
 
 
 ### 로컬 실행
